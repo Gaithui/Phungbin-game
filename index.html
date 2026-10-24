@@ -1,0 +1,388 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Adventure of Love ❤️</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
+    background: linear-gradient(135deg, #16002b, #4b145b, #120c35);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 650px;
+    margin: auto;
+    padding: 25px 18px;
+}
+
+h1 {
+    color: #ffb6d9;
+    font-size: 32px;
+}
+
+#scene {
+    font-size: 75px;
+    margin: 20px 0;
+}
+
+#story {
+    font-size: 18px;
+    line-height: 1.7;
+    min-height: 100px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 12px auto;
+    padding: 15px;
+    border: 2px solid #ffb6d9;
+    border-radius: 15px;
+    background: #7d286f;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #e84393;
+    transform: scale(1.03);
+}
+
+#progress {
+    color: #ffb6d9;
+    font-weight: bold;
+    margin: 20px;
+}
+
+footer {
+    color: #e6c7f5;
+    margin-top: 35px;
+    font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>❤️ The Adventure of Love ❤️</h1>
+
+<p>A magical adventure created especially for Phungbin.</p>
+
+<div id="scene">🌌</div>
+
+<div id="story">
+Welcome, brave adventurer!<br>
+A magical journey awaits you.
+</div>
+
+<div id="choices"></div>
+
+<div id="progress">Love Crystals: 0 / 5</div>
+
+<footer>Made with ❤️, especially for Phungbin</footer>
+
+</div>
+
+<script>
+let crystals = 0;
+
+const story = document.getElementById("story");
+const scene = document.getElementById("scene");
+const choices = document.getElementById("choices");
+const progress = document.getElementById("progress");
+
+function updateProgress() {
+    progress.textContent = "Love Crystals: " + crystals + " / 5";
+}
+
+function showScene(emoji, text, options) {
+    scene.textContent = emoji;
+    story.innerHTML = text;
+    choices.innerHTML = "";
+
+    options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option.text;
+        button.onclick = option.action;
+        choices.appendChild(button);
+    });
+}
+
+function getCrystal() {
+    if (crystals < 5) {
+        crystals++;
+        updateProgress();
+    }
+}
+
+function startGame() {
+    crystals = 0;
+    updateProgress();
+
+    showScene("🌲✨", 
+        "You enter an enchanted forest. The trees glow with magic, and a mysterious path appears before you.<br><br>Where will you go?",
+        [
+            {
+                text: "🌸 Follow the glowing flowers",
+                action: forestPath
+            },
+            {
+                text: "🌊 Follow the magical river",
+                action: riverPath
+            }
+        ]
+    );
+}
+
+function forestPath() {
+    showScene("🌸🦋",
+        "Beautiful butterflies guide you to an ancient tree. A tiny fairy appears and asks you a question.<br><br>What makes a journey special?",
+        [
+            {
+                text: "💎 Treasure",
+                action: () => {
+                    showScene("🧚",
+                        "The fairy smiles. 'Treasure is wonderful, but there is something even more precious.'",
+                        [
+                            {
+                                text: "Continue the adventure ➜",
+                                action: fairyGift
+                            }
+                        ]
+                    );
+                }
+            },
+            {
+                text: "❤️ Someone special",
+                action: fairyGift
+            }
+        ]
+    );
+}
+
+function fairyGift() {
+    getCrystal();
+
+    showScene("✨💎",
+        "The fairy is happy with your answer and gives you your first Love Crystal!<br><br>She points toward a mysterious cave.",
+        [
+            {
+                text: "Enter the cave 🕯️",
+                action: cave
+            }
+        ]
+    );
+}
+
+function riverPath() {
+    showScene("🌊🧙",
+        "Beside the magical river, an old wizard blocks your way.<br><br>He asks: What becomes stronger when shared?",
+        [
+            {
+                text: "Love ❤️",
+                action: riverGift
+            },
+            {
+                text: "A secret 🤫",
+                action: () => {
+                    showScene("🧙",
+                        "'Interesting answer,' says the wizard. 'But think again!'",
+                        [
+                            {
+                                text: "Love ❤️",
+                                action: riverGift
+                            }
+                        ]
+                    );
+                }
+            }
+        ]
+    );
+}
+
+function riverGift() {
+    getCrystal();
+
+    showScene("💎🌈",
+        "The wizard gives you a Love Crystal and opens a secret passage through the forest.",
+        [
+            {
+                text: "Follow the passage ➜",
+                action: cave
+            }
+        ]
+    );
+}
+
+function cave() {
+    showScene("🕯️🦇",
+        "Inside the cave, three magical doors appear.<br><br>One door leads forward. Which do you choose?",
+        [
+            {
+                text: "🚪 The golden door",
+                action: () => puzzle(true)
+            },
+            {
+                text: "🚪 The silver door",
+                action: () => puzzle(false)
+            },
+            {
+                text: "🚪 The crystal door",
+                action: () => puzzle(true)
+            }
+        ]
+    );
+}
+
+function puzzle(correct) {
+    if (correct) {
+        getCrystal();
+
+        showScene("💎✨",
+            "Correct choice! A hidden chamber opens, and you discover another Love Crystal.",
+            [
+                {
+                    text: "Continue deeper ➜",
+                    action: mountain
+                }
+            ]
+        );
+    } else {
+        showScene("🌟",
+            "The door leads to a small room with a clue: 'Choose the path that shines with hope.'",
+            [
+                {
+                    text: "Try again",
+                    action: cave
+                }
+            ]
+        );
+    }
+}
+
+function mountain() {
+    showScene("⛰️🌙",
+        "You emerge from the cave and climb a magical mountain. At the top, a moonlit bridge stretches across the clouds.<br><br>How will you cross?",
+        [
+            {
+                text: "Walk bravely across 🌉",
+                action: bridge
+            },
+            {
+                text: "Ask the stars for help ⭐",
+                action: bridge
+            }
+        ]
+    );
+}
+
+function bridge() {
+    getCrystal();
+
+    showScene("🌉💎",
+        "The stars illuminate the bridge. You cross safely and find another Love Crystal waiting for you.",
+        [
+            {
+                text: "Travel to the castle 🏰",
+                action: castle
+            }
+        ]
+    );
+}
+
+function castle() {
+    showScene("🏰🌹",
+        "At last, you reach a beautiful castle surrounded by roses.<br><br>A mysterious guardian asks: What is the greatest gift you can give someone?",
+        [
+            {
+                text: "Gold and jewels 💰",
+                action: () => {
+                    showScene("🛡️",
+                        "The guardian says, 'Those things are valuable, but there is something more meaningful.'",
+                        [
+                            {
+                                text: "Time, care, and love ❤️",
+                                action: finalCrystal
+                            }
+                        ]
+                    );
+                }
+            },
+            {
+                text: "Time, care, and love ❤️",
+                action: finalCrystal
+            }
+        ]
+    );
+}
+
+function finalCrystal() {
+    getCrystal();
+
+    showScene("💎👑",
+        "The guardian smiles and gives you the fifth Love Crystal! The castle gates open, revealing a beautiful garden.",
+        [
+            {
+                text: "Enter the garden 🌹",
+                action: ending
+            }
+        ]
+    );
+}
+
+function ending() {
+    showScene("🌹❤️🏰",
+        "<h2>For You, Phungbin ❤️</h2>" +
+        "You travelled through the forest, solved puzzles, crossed the clouds, and reached the castle.<br><br>" +
+        "But the greatest treasure was never gold, magic, or the five crystals.<br><br>" +
+        "<strong>It was having someone special in your heart.</strong><br><br>" +
+        "If I could give you one thing in this world, I would give you the ability to see yourself through my eyes. Then you would know how special you are to me. 💖<br><br>" +
+        "This little adventure was made just for you.<br><br>" +
+        "<strong>Will you keep this little adventure as a memory of us? ❤️</strong>",
+        [
+            {
+                text: "❤️ Yes, I'll keep it!",
+                action: () => {
+                    showScene("💖✨",
+                        "You have unlocked the secret ending!<br><br>" +
+                        "No matter how far the adventure goes, you will always be someone special in this little story. ❤️<br><br>" +
+                        "With love, just for Phungbin. 🌹",
+                        [
+                            {
+                                text: "Play Again 🔄",
+                                action: startGame
+                            }
+                        ]
+                    );
+                }
+            },
+            {
+                text: "🔄 Play Again",
+                action: startGame
+            }
+        ]
+    );
+}
+
+startGame();
+</script>
+
+</body>
+</html>
+```
